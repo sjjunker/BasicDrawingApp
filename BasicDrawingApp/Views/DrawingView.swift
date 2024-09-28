@@ -13,6 +13,7 @@ struct DrawingView: View {
     @State private var currentColor = Color.black
     @State private var currentLineWidth: CGFloat = 3
     @State private var redoLines: [Line] = []
+    @State private var brushStyle: String = "line"
     
     var body: some View {
         GeometryReader {geo in
@@ -23,12 +24,25 @@ struct DrawingView: View {
                     for line in lines {
                         context.stroke(line.path, with: .color(line.color), lineWidth: line.lineWidth)
                     }
-                    context.stroke(currentPath, with: .color(currentColor), lineWidth: currentLineWidth)
+                    context.stroke(currentPath, with: .color(currentColor),
+                        lineWidth: currentLineWidth)
                 }
                 .frame(width: geo.size.width, height: geo.size.height - 20)
                 .border(Color.blue)
                 .gesture(DragGesture()
-                    .onChanged{value in currentPath.addLine(to: value.location)
+                    .onChanged{value in
+                        switch brushStyle {
+                        case "line":
+                            currentPath.addLine(to: value.location)
+                        case "square":
+                            currentPath.addRect(CGRect(x: value.location.x, y: value.location.y, width: 25, height: 25))
+                        case "circle":
+                            currentPath.addEllipse(in: CGRect(x: value.location.x, y: value.location.y, width: 25, height: 25))
+                        default:
+                            currentPath.addLine(to: value.location)
+                        }
+                        
+                        
                         redoLines = []
                     }
                     .onEnded{value in
@@ -50,8 +64,12 @@ struct DrawingView: View {
                         Text("Regular").tag(CGFloat(3))
                         Text("Bold").tag(CGFloat(5))
                     }
-                    //TODO: Brush Style
-                  
+                    //Brush Style
+                    Picker ("Brush Style", selection: $brushStyle) {
+                        Image(systemName: "scribble").tag("line")
+                        Image(systemName: "square").tag("square")
+                        Image(systemName: "circle").tag("circle")
+                    }
                     
                     
                     //TODO: Save Button
