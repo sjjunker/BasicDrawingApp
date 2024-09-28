@@ -12,6 +12,7 @@ struct DrawingView: View {
     @State private var currentPath = Path()
     @State private var currentColor = Color.black
     @State private var currentLineWidth: CGFloat = 3
+    @State private var redoLines: [Line] = []
     
     var body: some View {
         GeometryReader {geo in
@@ -28,6 +29,7 @@ struct DrawingView: View {
                 .border(Color.blue)
                 .gesture(DragGesture()
                     .onChanged{value in currentPath.addLine(to: value.location)
+                        redoLines = []
                     }
                     .onEnded{value in
                         let newLine = Line(path: currentPath, lineWidth: currentLineWidth, color: currentColor)
@@ -47,6 +49,28 @@ struct DrawingView: View {
                         Text("Thin").tag(CGFloat(1))
                         Text("Regular").tag(CGFloat(3))
                         Text("Bold").tag(CGFloat(5))
+                    }
+                    //TODO: Brush Style
+                  
+                    
+                    
+                    //TODO: Save Button
+                    
+                    //Undo and Redo Buttons
+                    Button {
+                        if lines.count > 0 {
+                            redoLines.append(lines.popLast()!)
+                        }
+                    } label: {
+                        Image(systemName: "arrow.uturn.backward.circle")
+                    }
+                    
+                    Button {
+                        if redoLines.count > 0 {
+                            lines.append(redoLines.popLast()!)
+                        }
+                    } label: {
+                        Image(systemName: "arrow.uturn.forward.circle")
                     }
                     
                     //Clear Canvas
