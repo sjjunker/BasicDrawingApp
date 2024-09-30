@@ -12,6 +12,7 @@ struct BasicDrawingAppApp: App {
     var body: some Scene {
         WindowGroup {
             DrawingView()
+                .environmentObject(DrawingModel())
         }
     }
 }
