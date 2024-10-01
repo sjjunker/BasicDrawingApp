@@ -23,9 +23,6 @@ struct MenuView: View {
                 Image(systemName: "circle").tag("circle")
             }
             
-            
-            //TODO: Save Button
-            
             //Undo and Redo Buttons
             Button {
                 if model.lines.count > 0 {
