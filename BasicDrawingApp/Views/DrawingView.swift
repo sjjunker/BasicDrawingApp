@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DrawingView: View {
     @EnvironmentObject var model: DrawingModel
-   
     
     var body: some View {
         

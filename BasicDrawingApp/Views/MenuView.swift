@@ -16,6 +16,7 @@ struct MenuView: View {
                 Text("Regular").tag(CGFloat(3))
                 Text("Bold").tag(CGFloat(5))
             }
+            
             //Brush Style
             Picker ("Brush Style", selection: $model.brushStyle) {
                 Image(systemName: "scribble").tag("line")
